@@ -1,0 +1,48 @@
+<h2>
+	le tableau comporte
+	{{authors| length}}
+	auteurs
+</h2>
+{% if authors is empty or authors is not defined %}
+	<h2>
+		vérifer votre tableau
+	</h2>
+
+{% else %}
+	<table border="1">
+		<tr>
+			<th>Id</th>
+			<th>UserNAme</th>
+			<th>email</th>
+			<th>nb_books</th>
+			<th>actions</th>
+		</tr>
+		{% set l=0 %}
+		{% for elt in authors %}
+			<tr>
+				<td>{{elt.id}}</td>
+				{# <td><img src="{{elt.picture}}" alt="image non dispo"></td>#}
+				<td>{{elt.username | upper}}</td>
+				<td>{{elt.email}}</td>
+				<td>{{elt.nb_books}}</td>
+                <td>
+				
+					
+                        <a href="{{ path('author_details', {id: elt.id}) }}" class="btn btn-info btn-sm">
+                            Details
+                        </a>
+						<a href="{{path("author_updateAuthor",{'id': elt.id})}}" class="btn btn-warning btn-sm">Update</a>
+					<a href="{{path("author_delete",{'id': elt.id})}}"  class="btn btn-danger btn-sm" onclick="return confirm('voullez vous vraiment supprimer cet auteur?')">Delete</a>
+                    </td>
+               
+				{% set l= l + elt.nb_books %}
+			</tr>
+
+		{% endfor %}
+		<h2>
+			le nombre totale des books est
+			{{l}}
+		</h2>
+	</table>
+
+{% endif %}
