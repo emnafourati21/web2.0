@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Livres{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des Livres</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h2>
+            Le tableau comporte {{ books|length }} livres
+        </h2>
+
+        {% if books is empty %}
+            <h2 class="text-warning">
+                Aucun livre trouvé dans la base de données
+            </h2>
+        {% else %}
+            <table border="1" class="table table-bordered">
+                <tr class="table-primary">
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Date de publication</th>
+                    <th>Catégorie</th>
+                    <th>Publié</th>
+                    <th>Actions</th>
+                </tr>
+                
+                {% set totalBooks = 0 %}
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.title | upper }}</td>
+                        <td>{{ book.author.username | upper }}</td>
+                        <td>{{ book.publicationDate|date('d/m/Y') }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>
+                            {% if book.published %}
+                                <span class="badge bg-success">Oui</span>
+                            {% else %}
+                                <span class="badge bg-danger">Non</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-warning btn-sm">Update</a>
+                            <a href="{{ path('book_delete', {'id': book.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?')">Delete</a>
+                            <a href="{{ path('book_show', {'id': book.id}) }}" class="btn btn-warning btn-sm">detail</a>
+
+                        </td>
+                    </tr>
+                    {% set totalBooks = totalBooks + 1 %}
+                {% endfor %}
+            </table>
+
+            <h2 class="text-info">
+                Le nombre total de livres est {{ totalBooks }}
+            </h2>
+
+            <p>Livres publiés : {{ nbPublished }}</p>
+<p>Livres non publiés : {{ nbUnpublished }}</p>
+        {% endif %}
+
+        <a href="{{ path('book_new') }}" class="btn btn-primary mt-3">
+            Ajouter un nouveau livre
+        </a>
+    </div>
+{% endblock %}

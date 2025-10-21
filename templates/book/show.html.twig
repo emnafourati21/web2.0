@@ -1,0 +1,11 @@
+<h2>Détails du livre</h2>
+
+<ul>
+    <li><strong>Titre :</strong> {{ book.title }}</li>
+    <li><strong>Catégorie :</strong> {{ book.category }}</li>
+    <li><strong>Publié :</strong> {{ book.published ? 'Oui' : 'Non' }}</li>
+    <li><strong>Auteur :</strong> {{ book.author.username }}</li>
+    <li><strong>Nombre de livres de l’auteur :</strong> {{ book.author.nbBook }}</li>
+</ul>
+
+<a href="{{ path('book_list') }}">Retour à la liste</a>

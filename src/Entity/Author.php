@@ -78,5 +78,7 @@ public function setnb_books(int $nb_books): self
     $this->nb_books = $nb_books;
     return $this;
 }
-    
+  #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
+private Collection $books;
+  
 }
