@@ -1,0 +1,20 @@
+<h2>Recherche d’auteurs par nombre de livres</h2>
+
+<form method="get" action="{{ path('author_search') }}">
+    <label>Min :</label>
+    <input type="number" name="min" required>
+    <label>Max :</label>
+    <input type="number" name="max" required>
+    <button type="submit">Rechercher</button>
+</form>
+
+{% if authors is not empty %}
+    <h3>Résultats :</h3>
+    <ul>
+        {% for author in authors %}
+            <li>{{ author.username }} — {{ author.nb_books }} livres</li>
+        {% endfor %}
+    </ul>
+{% elseif app.request.query.get('min') is not null %}
+    <p>Aucun auteur trouvé pour ces valeurs.</p>
+{% endif %}

@@ -53,6 +53,7 @@ class BookType extends AbstractType
                     'Science-Fiction' => 'Science-Fiction',
                     'Mystery' => 'Mystery',
                     'Autobiography' => 'Autobiography',
+                    'Romance' => 'Romance',
                 ],
                 'placeholder' => 'Sélectionnez une catégorie',
                 'label' => 'Catégorie',

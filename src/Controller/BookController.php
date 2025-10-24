@@ -146,5 +146,36 @@ public function showBook(BookRepository $bookRepository, int $id): Response
         'book' => $book,
     ]);
 }
+#[Route('/books/count/romance', name: 'book_count_romance')]
+public function countRomanceBooks(EntityManagerInterface $em): Response
+{
+    $dql = "SELECT COUNT(b.id) FROM App\Entity\Book b WHERE b.category = :category";
+    $query = $em->createQuery($dql)->setParameter('category', 'Romance');
+
+    $count = $query->getSingleScalarResult();
+
+    return $this->render('book/count_romance.html.twig', [
+        'count' => $count,
+    ]);
+}
+#[Route('/books/published/between', name: 'book_published_between')]
+public function booksPublishedBetween(EntityManagerInterface $em): Response
+{
+    $dql = "SELECT b FROM App\Entity\Book b 
+            WHERE b.published = true 
+            AND b.publicationDate BETWEEN :startDate AND :endDate";
+
+    $query = $em->createQuery($dql)
+                ->setParameter('startDate', new \DateTime('2025-10-01'))
+                ->setParameter('endDate', new \DateTime('2025-10-10'));
+
+    $books = $query->getResult();
+
+    return $this->render('book/published_betwenn.html.twig', [
+        'books' => $books,
+    ]);
+}
+
+
 
 }

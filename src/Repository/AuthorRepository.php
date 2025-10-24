@@ -25,7 +25,7 @@ class AuthorRepository extends ServiceEntityRepository
 //            ->andWhere('a.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxResults(10) 
 //            ->getQuery()
 //            ->getResult()
 //        ;
@@ -39,5 +39,14 @@ class AuthorRepository extends ServiceEntityRepository
 //            ->getQuery()
 //            ->getOneOrNullResult()
 //        ;
-//    }
+//    }*
+
+public function listAuthorByEmail()
+{
+    return $this->createQueryBuilder('a')
+        ->orderBy('a.email', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
 }

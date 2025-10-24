@@ -47,6 +47,7 @@ final class AuthorController extends AbstractController
         ];
 
         $author = $authors[$id] ?? null;
+        
 
         return $this->render('author/index.html.twig', [
             'author' => $author
@@ -57,9 +58,11 @@ final class AuthorController extends AbstractController
     {
 
         // $authors = $authRepo->findAll();
+        $authors = $authorRepository->listAuthorByEmail();
+
 
         return $this->render('author/list.html.twig', [
-            'authors' => $authorRepository->findAll(),
+            'authors' => $authors,
         ]);
     }
  #[Route('/add', name: 'author_addAuthor')]
@@ -121,6 +124,38 @@ final class AuthorController extends AbstractController
 
         return $this->redirectToRoute('author_getAuthors');
     }
+    #[Route('/authors/search', name: 'author_search')]
+public function searchAuthors(Request $request, EntityManagerInterface $em): Response
+{
+    $min = $request->query->get('min');
+    $max = $request->query->get('max');
+
+    $authors = [];
+
+    if ($min !== null && $max !== null) {
+        $dql = "SELECT a FROM App\Entity\Author a 
+                WHERE a.nb_books BETWEEN :min AND :max";
+        $query = $em->createQuery($dql)
+                    ->setParameter('min', $min)
+                    ->setParameter('max', $max);
+        $authors = $query->getResult();
+    }
+
+    return $this->render('author/search.html.twig', [
+        'authors' => $authors,
+    ]);
+}
+#[Route('/authors/delete/empty', name: 'author_delete_empty')]
+public function deleteEmptyAuthors(EntityManagerInterface $em): Responseu
+{
+    $dql = "DELETE FROM App\Entity\Author a WHERE a.nb_books = 0";
+    $query = $em->createQuery($dql);
+    $deletedCount = $query->execute();
+
+    $this->addFlash('success', $deletedCount . ' auteur(s) supprimé(s) avec succès.');
+    return $this->redirectToRoute('author_getAuthors');
+}
+
 }
 
 

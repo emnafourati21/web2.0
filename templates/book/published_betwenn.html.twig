@@ -1,0 +1,11 @@
+<h2>Livres publiés entre 2014 et 2018</h2>
+
+{% if books is empty %}
+    <p>Aucun livre trouvé dans cette période.</p>
+{% else %}
+    <ul>
+        {% for book in books %}
+            <li>{{ book.title }} - {{ book.category }} - {{ book.publicationDate|date('Y') }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
